@@ -1,0 +1,47 @@
+<!--
+ - Created by johnpernock from OpenGate Consulting on 2019-01-09.
+ -->
+
+<aura:component description="DependentPicklist" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="DependentPicklistController">
+    <!-- call doInit function on component load -->
+    <aura:handler name="init" value="this" action="{!c.doInit}"/>
+
+    <!-- aura attributes-->
+    <aura:attribute name="listControllingValues" type="list" default="[]" description="to store controller field values"/>
+    <aura:attribute name="listDependingValues" type="list" default="['--- None ---']" description="to store dependent field values"/>
+    <aura:attribute name="depnedentFieldMap" type="map" description="map to store dependent values with controlling value"/>
+    <aura:attribute name="bDisabledDependentFld" type="boolean" default="true"/>
+
+    <aura:attribute name="objDetail" type="sObject" />
+    <aura:attribute name="requiredField" type="Boolean" default="false" />
+    <aura:attribute name="objControlField" type="String" />
+    <aura:attribute name="objControlLabel" type="String" />
+    <aura:attribute name="objDependentField" type="String" />
+    <aura:attribute name="objDependentLabel" type="String" />
+    <aura:attribute name="controllingFieldAPI" type="string"  description="store field API name of Controller field"/>
+    <aura:attribute name="dependingFieldAPI" type="string" description="store field API name of dependent field"/>
+    <div aura:id="dependentPicklistDiv" class="slds-is-relative">
+    <lightning:spinner variant="brand" size="large" aura:id="loaddependent_spinner" class="slds-hide" />
+    <!--Controller Field-->
+        <lightning:select name="controllerFld"
+                          value="{!v.objControlField}"
+                          label="{!v.objControlLabel}"
+                          onchange="{!c.onControllerFieldChange}"
+                          required="{!v.requiredField}">
+            <aura:iteration items="{!v.listControllingValues}" var="val">
+                <option value="{!val}">{!val}</option>
+            </aura:iteration>
+        </lightning:select>
+
+    <!--Dependent Field-->
+        <lightning:select name="dependentFld"
+                          value="{!v.objDependentField}"
+                          label="{!v.objDependentLabel}"
+                          disabled="{!v.bDisabledDependentFld}"
+                          required="{!v.requiredField}">
+            <aura:iteration items="{!v.listDependingValues}" var="val">
+                <option value="{!val}">{!val}</option>
+            </aura:iteration>
+        </lightning:select>
+    </div>
+</aura:component>
