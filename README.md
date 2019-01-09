@@ -1,7 +1,6 @@
 # DependentPicklist
 
-Based on a tutorial/example based here:
-http://sfdcmonkey.com/2018/08/31/dependent-picklist-lightningselect-lightning-salesforce/
+Based on a tutorial/example based here - http://sfdcmonkey.com/2018/08/31/dependent-picklist-lightningselect-lightning-salesforce/
 
 ## Changes Made From Tutorial Include:
 * Making Object / Field Names exposed so we can update data back on the controller from the component
