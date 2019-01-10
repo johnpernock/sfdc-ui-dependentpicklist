@@ -17,11 +17,10 @@
             component.find("loaddependent_spinner").set("v.class" , 'slds-hide');
             if (response.getState() == "SUCCESS") {
                 //store the return response from server (map<string,List<string>>)
-                var StoreResponse = response.getReturnValue();
-
+                var StoreResponse = JSON.parse(response.getReturnValue());
+                console.log(StoreResponse);
                 // once set #StoreResponse to depnedentFieldMap attribute
-                component.set("v.depnedentFieldMap",StoreResponse);
-
+                component.set("v.depnedentFieldMap",response.getReturnValue());
                 // create a empty array for store map keys(@@--->which is controller picklist values)
                 var listOfkeys = []; // for store all map keys (controller picklist values)
                 var ControllerField = []; // for store controller picklist value to set on lightning:select.
@@ -29,17 +28,24 @@
                 // play a for loop on Return map
                 // and fill the all map key on listOfkeys variable.
                 for (var singlekey in StoreResponse) {
-                    listOfkeys.push(singlekey);
+                    var controlValue = StoreResponse[singlekey];
+                    listOfkeys.push(controlValue);
                 }
 
                 //set the controller field value for lightning:select
                 if (listOfkeys != undefined && listOfkeys.length > 0) {
-                    ControllerField.push('--- None ---');
+                    var nullValueKey = {
+                        value: null,
+                        label: "--- None ---",
+                        values: []
+                    };
+                    ControllerField.push(nullValueKey);
                 }
 
                 for (var i = 0; i < listOfkeys.length; i++) {
                     ControllerField.push(listOfkeys[i]);
                 }
+                ControllerField.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
                 // set the ControllerField variable values to country(controller picklist field)
                 component.set("v.listControllingValues", ControllerField);
             }else{
@@ -52,7 +58,12 @@
     fetchDepValues: function(component, ListOfDependentFields) {
         // create a empty array var for store dependent picklist values for controller field
         var dependentFields = [];
-        dependentFields.push('--- None ---');
+        var nullValueKey = {
+                                value: null,
+                                label: "--- None ---",
+                                values: []
+                            };
+        dependentFields.push(nullValueKey);
         for (var i = 0; i < ListOfDependentFields.length; i++) {
             dependentFields.push(ListOfDependentFields[i]);
         }
